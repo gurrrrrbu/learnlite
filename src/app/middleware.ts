@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { verifyJWT } from "./lib/auth";
+import { verifyJWT } from "../lib/auth";
 
 const PROTECTED_PREFIXES = ["/api/posts"]; // endpoints that need auth (POST/PUT/DELETE)
 
