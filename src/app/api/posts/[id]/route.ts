@@ -4,19 +4,18 @@ import { Post } from "@/models/post.model";
 import { getAuthUser, PostSchema } from "@/lib/middleware";
 
 /**
- * ✅ GET /api/posts/[id]
- * Fetch a single post by its ID
+ * GET /api/posts/[id]
+ * Fetch a single post by ID
  */
 export async function GET(
   request: NextRequest,
-  context: { params: { id: string } } // ✅ No Promise here
-) {
+  context: { params: { id: string } }
+): Promise<NextResponse> {
   try {
     await connectDB();
 
     const { id } = context.params;
     const post = await Post.findById(id).populate("owner", "name email");
-
     if (!post)
       return NextResponse.json({ error: "Not found" }, { status: 404 });
 
@@ -28,16 +27,16 @@ export async function GET(
 }
 
 /**
- * ✅ PUT /api/posts/[id]
- * Update a post by ID (requires authentication)
+ * PUT /api/posts/[id]
+ * Update a post (requires authentication)
  */
 export async function PUT(
   request: NextRequest,
-  context: { params: { id: string } } // ✅ No Promise
-) {
+  context: { params: { id: string } }
+): Promise<NextResponse> {
   try {
     const user = await getAuthUser();
-    if (!user || !user.id)
+    if (!user?.id)
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
     const { id } = context.params;
@@ -67,16 +66,16 @@ export async function PUT(
 }
 
 /**
- * ✅ DELETE /api/posts/[id]
- * Delete a post by ID (requires authentication)
+ * DELETE /api/posts/[id]
+ * Delete a post (requires authentication)
  */
 export async function DELETE(
   request: NextRequest,
-  context: { params: { id: string } } // ✅ No Promise
-) {
+  context: { params: { id: string } }
+): Promise<NextResponse> {
   try {
     const user = await getAuthUser();
-    if (!user || !user.id)
+    if (!user?.id)
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
     const { id } = context.params;
